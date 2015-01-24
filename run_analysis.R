@@ -33,7 +33,7 @@ testDf <- data.frame(testSubject, testActivity, testData)
 mergedDf <- rbind(trainingDf, testDf)
 
 # Step 2- Extracts only the measurements on the mean and standard deviation for each measurement. 
-mergedDf <- mergedDf[, grep("Subject|Activity|mean|std", colnames(mergedDf))]
+mergedDf <- mergedDf[, grep("Subject|Activity|mean$|mean_|std$|std_", colnames(mergedDf))]
 
 # Step 3 - Uses descriptive activity names to name the activities in the data set
 activityNameFile <- paste(zipDir, "activity_labels.txt", sep="")
@@ -47,4 +47,5 @@ mergedDf <- select(mergedDf, -Activity.Id)
 # Step 5 - From the data set in step 4, creates a second, independent tidy data set with the 
 #          average of each variable for each activity and each subject.
 newDf <- summarise_each(group_by(mergedDf, Subject, Activity.Name), funs(mean))
-write.table(newDf, file="./data/tidyData.txt")
+write.table(newDf, file="./data/tidyData.txt", row.name=FALSE)
+
